@@ -49,7 +49,7 @@ const Item = styled.div`
 `;
 
 function App() {
-  const todoReducer = useAppSelector((state) => state.a);
+  const todoReducer = useAppSelector((state) => state.todoReducer);
   const todoList = todoReducer.todoList;
 
   const dispatch = useAppDispatch();
