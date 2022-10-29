@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useAppSelector, useAppDispatch } from './hook';
 import { addTimestamp, addTodo } from './slices/todo';
 import React, { useState } from 'react';
+import { useGetTodoListQuery } from './services/todoApi';
+import { loadavg } from 'os';
 
 const Wrapper = styled.div`
   padding: 1.5rem;
@@ -56,6 +58,17 @@ function App() {
 
   const [text, setText] = useState('');
 
+  // Using a query hook automatically fetches data and returns query values
+  const { data, error, isLoading } = useGetTodoListQuery('1');
+  // Individual hooks are also accessible under the generated endpoints:
+  // const { data, error, isLoading } = pokemonApi.endpoints.getPokemonByName.useQuery('bulbasaur')
+
+  // console.log(data);
+  // console.log(error);
+  // console.log(isLoading);
+
+  const { userId = 'N/A', title = 'N/A' } = data || {};
+
   return (
     <Wrapper>
       <Title>TODO LIST</Title>
@@ -90,6 +103,16 @@ function App() {
           </Item>
         );
       })}
+
+      <Title>List 2</Title>
+      {isLoading ? (
+        <p>Loading</p>
+      ) : (
+        <div>
+          <p>USER ID: {userId}</p>
+          <p>USER Title: {title}</p>
+        </div>
+      )}
     </Wrapper>
   );
 }
