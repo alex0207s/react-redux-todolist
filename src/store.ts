@@ -2,15 +2,17 @@ import { configureStore } from '@reduxjs/toolkit';
 import todoReducer from './slices/todo';
 import { logger } from './middleware';
 import { combineReducers } from 'redux';
+import { todoApi } from './services/todoApi';
 
 const reducers = combineReducers({
   todoReducer,
+  [todoApi.reducerPath]: todoApi.reducer,
 });
 
 const store = configureStore({
   reducer: reducers,
   middleware: (getCurrentMiddlewares) => {
-    return getCurrentMiddlewares().concat(logger);
+    return getCurrentMiddlewares().concat(logger).concat(todoApi.middleware);
   },
 });
 
